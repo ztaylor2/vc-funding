@@ -1,25 +1,27 @@
 """A python twitter bot that tweets VC funding information."""
 
-
 import os
 import tweepy
 import time
 import requests
 from bs4 import BeautifulSoup
+from flask import Flask
 
+# satisfy heroku
+app = Flask(__name__)
+app.run(os.environ.get('PORT'))
 
-HEADLINES = set()
-
-page = requests.get("http://www.vcnewsdaily.com/")
-
+# handle twitter auth
 CONSUMER_KEY = os.environ.get('CONSUMER_KEY', '')
 CONSUMER_SECRET = os.environ.get('CONSUMER_SECRET', '')
 ACCESS_KEY = os.environ.get('ACCESS_KEY', '')
 ACCESS_SECRET = os.environ.get('ACCESS_SECRET', '')
-
 auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
 auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
 api = tweepy.API(auth)
+
+HEADLINES = set()
+page = requests.get("http://www.vcnewsdaily.com/")
 
 while True:
     soup = BeautifulSoup(page.content, 'html.parser')
