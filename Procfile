@@ -1,1 +1,1 @@
-clock: python vc_funding.py
+web: python vc_funding.py
