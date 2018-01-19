@@ -6,6 +6,7 @@ import time
 import requests
 from bs4 import BeautifulSoup
 from flask import Flask
+from apscheduler.schedulers.blocking import BlockingScheduler
 
 # satisfy heroku
 app = Flask(__name__)
@@ -23,7 +24,12 @@ api = tweepy.API(auth)
 HEADLINES = set()
 page = requests.get("http://www.vcnewsdaily.com/")
 
-while True:
+sched = BlockingScheduler()
+
+
+@sched.scheduled_job('interval', minutes=30)
+def twitter_bot():
+    """Scrape and tweet."""
     soup = BeautifulSoup(page.content, 'html.parser')
     headline_a_tags = soup.find_all("a", {"class": "titleLink"})
     for headline_a_tag in headline_a_tags:
@@ -32,4 +38,4 @@ while True:
             api.update_status(headline_a_tag.text)
             time.sleep(600)
 
-    time.sleep(1800)
+sched.start()
