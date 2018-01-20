@@ -34,6 +34,6 @@ if __name__ == '__main__':
             if headline_a_tag.text not in HEADLINES:
                 HEADLINES.add(headline_a_tag.text)
                 api.update_status(headline_a_tag.text)
-                time.sleep(600)
+                # time.sleep(600)
 
     sched.start()
