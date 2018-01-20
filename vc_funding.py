@@ -7,8 +7,6 @@ import requests
 from bs4 import BeautifulSoup
 from apscheduler.schedulers.blocking import BlockingScheduler
 
-# satisfy heroku
-
 sched = BlockingScheduler()
 
 HEADLINES = set()
